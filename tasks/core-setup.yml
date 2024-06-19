@@ -20,9 +20,10 @@
       - python3-pip
       - dconf-editor
       - moreutils
-      - libstdc++-12-dev
-      - g++-12-multilib
-      - gcc-12-multilib
+      - awscli
+      - libstdc++-10-dev
+      - g++-10-multilib
+      - gcc-10-multilib
       - fonts-powerline
   tags: [install, core]
 
@@ -31,18 +32,16 @@
   block:
     - name: Create Directory
       ansible.builtin.file:
-        path: /home/{{ user }}/.fonts/JetBrainsMonoNerd
+        path: /home/{{ lookup('env', 'USER') }}/.fonts/JetBrainsMonoNerd
         state: directory
         mode: '0755'
-        owner: '{{ user }}'
-        group: '{{ user }}'
+        owner: "{{ lookup('env', 'USER') }}"
     - name: Download
       ansible.builtin.unarchive:
         src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-        dest: /home/{{ user }}/.fonts/JetBrainsMonoNerd
+        dest: /home/{{ lookup('env', 'USER') }}/.fonts/JetBrainsMonoNerd
         remote_src: true
-        owner: '{{ user }}'
-        group: '{{ user }}'
+        owner: "{{ lookup('env', 'USER') }}"
     - name: Font cache update
       action: command fc-cache -fv
   tags: [install, core]
@@ -71,14 +70,14 @@
   tags: [install, core]
 - name: Check if Starship is installed
   ansible.builtin.stat:
-    path: /home/{{ user }}/.config/starship.toml
+    path: /home/{{ lookup('env', 'USER') }}/.config/starship.toml
   register: starship
   tags: [install, core]
 - name: Install
   when: not starship.stat.exists
   ansible.builtin.command: '{{ linuxbrew_executable }} install starship'
   environment:
-    HOME: /home/{{ user }}
+    HOME: /home/{{ lookup('env', 'USER') }}
   args:
     executable: /bin/bash
   tags: [install, core]
@@ -89,11 +88,13 @@
     executable: /bin/bash
   tags: [install, core]
 - name: Adding SDK Man to bash_profile
-  lineinfile: path={{ home }}/.bash_profile line={{ item }} state=present create=yes
+  environment:
+    HOME: /home/{{ lookup('env', 'USER') }}
+  lineinfile: path=$HOME/.bash_profile line={{ item }} state=present create=yes
   with_items: [source "$HOME/.sdkman/bin/sdkman-init.sh"]
   tags: [install, core]
 - name: Installing Java
-  shell: source ~/.bash_profile && sdk install java {{ java_version }}
+  shell: source ~/.bash_profile && sdk install java 21.0.3-amzn
   become: false
   args:
     executable: /bin/bash
@@ -135,7 +136,7 @@
   tags: [install, core]
 - name: Extract Lazydocker version
   set_fact:
-    lazygit_version: "{{ lazydocker_release.content | from_json | json_query('tag_name') | regex_replace('^v', '') }}"
+    lazydocker_version: "{{ lazydocker_release.content | from_json | json_query('tag_name') | regex_replace('^v', '') }}"
   tags: [install, core]
 - name: Download Lazydocker
   get_url:
@@ -155,24 +156,4 @@
     src: /tmp/lazygit
     dest: /usr/local/bin/lazygit
     mode: '0755'
-  tags: [install, core]
-- name: Install package dependencies.
-  package: name={{ item }} state=present
-  with_items: [python, unzip]
-  tags: [install, core]
-- name: Download the awscli bundle.
-  get_url: url=https://s3.amazonaws.com/aws-cli/awscli-bundle.zip dest=/tmp/awscli-bundle.zip
-  register: aws_cli_download_bundle
-  tags: [install, core]
-- name: Unarchive the installer.
-  unarchive: src=/tmp/awscli-bundle.zip dest=/tmp copy=no creates=/tmp/awscli-bundle
-  when: aws_cli_download_bundle.changed
-  register: aws_cli_unarchive_installer
-  tags: [install, core]
-- name: Install awscli package.
-  become: true
-  shell: python /tmp/awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
-  args:
-    creates: /usr/bin/aws
-  when: aws_cli_unarchive_installer.changed
   tags: [install, core]

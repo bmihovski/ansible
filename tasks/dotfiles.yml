@@ -1,6 +1,7 @@
 ---
 - name: Installing stow
   apt: name=stow
+  become: true
   tags: [install, dotfiles, stow]
 - name: Cloning .dotfiles
   ansible.builtin.git:
@@ -12,5 +13,8 @@
     version: master
   tags: [install, dotfiles, stow]
 - name: Stow dotfiles
-  shell: cd $HOME/Privatespace/.dotfiles && ./ubuntu && ./process decrypt
+  environment:
+    HOME: /home/{{ lookup('env', 'USER') }}
+    ANSIBLE_VAULT_PASSWORD_FILE: /home/{{ lookup('env', 'USER') }}/.vault_pass.txt
+  shell: rm $HOME/.zshrc && cd $HOME/Privatespace/.dotfiles && ./ubuntu && ./process decrypt
   tags: [install, dotfiles, stow]
