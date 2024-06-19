@@ -1,31 +1,47 @@
+---
 - hosts: localhost
   vars:
-    source_key: "./.ssh/id_rsa"
-    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-    personal: "{{ lookup('env', 'HOME') }}/personal"
+    personal: "{{ lookup('env', 'HOME') }}/Privatespace"
+  roles:
+    # Common roles
+    - role: webarchitect609.jet_brains_toolbox
+      become: true
+      toolbox_install_for_user: "{{ lookup('env', 'USER') }}"
+      toolbox_install_dir: /usr/local/bin
+      tags: [install, core]
+    - role: githubixx.kubectl
+      become: true
+      tags: [install, core]
+    - role: haxorof.docker_ce
+      become: true
+      docker_users: ["{{ lookup('env', 'USER') }}"]
+      docker_compose: true
+      tags: [install, core]
+    - role: gantsign.oh-my-zsh
+      become: true
+      users:
+        - username: "{{ lookup('env', 'USER') }}"
+      plugins:
+        - git
+        - zsh-autosuggestions
+        - zsh-syntax-highlighting
+        - zsh-z
+        - kubectl
+      update_mode: auto
+      write_zshrc: false
+      tags: [install, core]
   pre_tasks:
-  - name: Update Apt
-    become: true
-    apt:
-      force_apt_get: true
-      update_cache: true
-      state: present
-    tags:
-      - install
-      - core
+    - name: Update Apt
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+      tags: [install, core]
   tasks:
-    - include: tasks/ssh.yml
     - include: tasks/git-setup.yml
     - include: tasks/core-setup.yml
-    - include: tasks/node-setup.yml
-    - include: tasks/npm-packages.yml
     - include: tasks/zsh-setup.yml
-    - include: tasks/slack-setup.yml
-    - include: tasks/personal-projects.yml
     - include: tasks/nvim-setup.yml
-    - include: tasks/brave.yml
-    - include: tasks/debugger.yml
     - include: tasks/dotfiles.yml
     - include: tasks/productivity-tools.yml
-    - include: tasks/lsp.yml
-

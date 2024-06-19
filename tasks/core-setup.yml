@@ -1,47 +1,178 @@
+---
 - name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
   become: true
   apt:
-    name: ["build-essential", "cmake", "pkg-config", "libpthread-stubs0-dev"]
-  tags:
-    - install
-    - neovim
-    - core
-
+    name: [build-essential, cmake, pkg-config, libpthread-stubs0-dev]
+  tags: [install, neovim, core]
 - name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
   become: true
   apt:
-    name: [ "lua5.1", "unzip", "libtool", "libtool-bin", "gettext"]
-  tags:
-    - install
-    - neovim
-    - core
-
+    name: [lua5.1, unzip, libtool, libtool-bin, gettext]
+  tags: [install, neovim, core]
 - name: Install System Packages 3 (the rest)
   become: true
   apt:
-    name: [ "compton", "curl", "htop", "golang", "lsof", "i3", "ccache", "ninja-build", "python3-pip", "dconf-editor", "nvidia-settings", "pavucontrol", "moreutils", "clangd", "ubuntu-mate-desktop" ]
-  tags:
-    - install
-    - core
+    name:
+      - curl
+      - htop
+      - lsof
+      - ccache
+      - python3-pip
+      - dconf-editor
+      - moreutils
+      - libstdc++-12-dev
+      - g++-12-multilib
+      - gcc-12-multilib
+      - fonts-powerline
+  tags: [install, core]
 
-- name: Install Clang
+# Install Nerd font
+- name: Install Jetbrains Nerd Font
+  block:
+    - name: Create Directory
+      ansible.builtin.file:
+        path: /home/{{ user }}/.fonts/JetBrainsMonoNerd
+        state: directory
+        mode: '0755'
+        owner: '{{ user }}'
+        group: '{{ user }}'
+    - name: Download
+      ansible.builtin.unarchive:
+        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
+        dest: /home/{{ user }}/.fonts/JetBrainsMonoNerd
+        remote_src: true
+        owner: '{{ user }}'
+        group: '{{ user }}'
+    - name: Font cache update
+      action: command fc-cache -fv
+  tags: [install, core]
+
+# Installs [HomeBrew](https://brew.sh/) prompt
+- name: Check if HomeBrew is installed
+  ansible.builtin.stat:
+    path: /home/linuxbrew/.linuxbrew/bin/brew
+  register: brew
+  tags: [install, core]
+- name: Download & Install HomeBrew
+  when: not brew.stat.exists
+  block:
+    - name: Download Installer Script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+        dest: /tmp/brew_install.sh
+        mode: '775'
+    - name: Run Installer Script
+      ansible.builtin.shell: NONINTERACTIVE=1 /tmp/brew_install.sh
+  tags: [install, core]
+- name: Set LinuxBrew Executable Path
+  ansible.builtin.set_fact:
+    linuxbrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
+    linuxbrew_path: /home/linuxbrew/.linuxbrew/bin
+  tags: [install, core]
+- name: Check if Starship is installed
+  ansible.builtin.stat:
+    path: /home/{{ user }}/.config/starship.toml
+  register: starship
+  tags: [install, core]
+- name: Install
+  when: not starship.stat.exists
+  ansible.builtin.command: '{{ linuxbrew_executable }} install starship'
+  environment:
+    HOME: /home/{{ user }}
+  args:
+    executable: /bin/bash
+  tags: [install, core]
+- name: Installing SDK Man
+  become: false
+  shell: curl -s 'https://get.sdkman.io' | bash
+  args:
+    executable: /bin/bash
+  tags: [install, core]
+- name: Adding SDK Man to bash_profile
+  lineinfile: path={{ home }}/.bash_profile line={{ item }} state=present create=yes
+  with_items: [source "$HOME/.sdkman/bin/sdkman-init.sh"]
+  tags: [install, core]
+- name: Installing Java
+  shell: source ~/.bash_profile && sdk install java {{ java_version }}
+  become: false
+  args:
+    executable: /bin/bash
+  tags: [install, core]
+- name: Get Lazygit version
+  uri:
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+    return_content: true
+  register: lazygit_release
+  tags: [install, core]
+- name: Extract Lazygit version
+  set_fact:
+    lazygit_version: "{{ lazygit_release.content | from_json | json_query('tag_name') | regex_replace('^v', '') }}"
+  tags: [install, core]
+- name: Download Lazygit
+  get_url:
+    url: https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz
+    dest: /tmp/lazygit.tar.gz
+  tags: [install, core]
+- name: Extract Lazygit
+  unarchive:
+    src: /tmp/lazygit.tar.gz
+    dest: /tmp
+    remote_src: true
+    creates: /tmp/lazygit
+  tags: [install, core]
+- name: Install Lazygit
   become: true
-  apt:
-    name: ["clang", "clang-11", "clang-12", "clangd", "clangd-10", "clangd-11", "clangd-12"]
-  tags:
-    - install
-    - neovim
-    - core
-
-- name: dconf i3
-  shell: dconf write /org/mate/desktop/session/required-components/windowmanager "'i3'"
-  tags:
-    - install
-    - core
-
-- name: dconf i3
-  shell: dconf write /org/mate/desktop/background/show-desktop-icons "false"
-  tags:
-    - install
-    - core
-
+  copy:
+    src: /tmp/lazygit
+    dest: /usr/local/bin/lazygit
+    mode: '0755'
+  tags: [install, core]
+- name: Get Lazydocker version
+  uri:
+    url: https://api.github.com/repos/jesseduffield/lazydocker/releases/latest
+    return_content: true
+  register: lazydocker_release
+  tags: [install, core]
+- name: Extract Lazydocker version
+  set_fact:
+    lazygit_version: "{{ lazydocker_release.content | from_json | json_query('tag_name') | regex_replace('^v', '') }}"
+  tags: [install, core]
+- name: Download Lazydocker
+  get_url:
+    url: https://github.com/jesseduffield/lazydocker/releases/latest/download/lazydocker_{{ lazydocker_version }}_Linux_x86_64.tar.gz
+    dest: /tmp/lazydocker.tar.gz
+  tags: [install, core]
+- name: Extract Lazydocker version
+  unarchive:
+    src: /tmp/lazydocker.tar.gz
+    dest: /tmp
+    remote_src: true
+    creates: /tmp/lazydocker
+  tags: [install, core]
+- name: Install Lazydocker
+  become: true
+  copy:
+    src: /tmp/lazygit
+    dest: /usr/local/bin/lazygit
+    mode: '0755'
+  tags: [install, core]
+- name: Install package dependencies.
+  package: name={{ item }} state=present
+  with_items: [python, unzip]
+  tags: [install, core]
+- name: Download the awscli bundle.
+  get_url: url=https://s3.amazonaws.com/aws-cli/awscli-bundle.zip dest=/tmp/awscli-bundle.zip
+  register: aws_cli_download_bundle
+  tags: [install, core]
+- name: Unarchive the installer.
+  unarchive: src=/tmp/awscli-bundle.zip dest=/tmp copy=no creates=/tmp/awscli-bundle
+  when: aws_cli_download_bundle.changed
+  register: aws_cli_unarchive_installer
+  tags: [install, core]
+- name: Install awscli package.
+  become: true
+  shell: python /tmp/awscli-bundle/install -i /usr/local/aws -b /usr/bin/aws
+  args:
+    creates: /usr/bin/aws
+  when: aws_cli_unarchive_installer.changed
+  tags: [install, core]

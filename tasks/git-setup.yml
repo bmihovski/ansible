@@ -1,42 +1,13 @@
-- name: Git personal setup email
+---
+- name: Git setup http proxy
   git_config:
-    name: user.email
+    name: http.proxy
     scope: global
-    value: "the.primeagen@gmail.com"
-  tags:
-  - git-personal
-- name: Git personal setup name
+    value: http://127.0.0.1:48157
+  tags: [git-vdi]
+- name: Git setup https proxy
   git_config:
-    name: user.name
+    name: https.proxy
     scope: global
-    value: "ThePrimeagen"
-  tags:
-  - git-personal
-- name: Git Rustin
-  git_config:
-    name: user.email
-    scope: global
-    value: "rustin.deeznuts@gmail.com"
-  tags:
-  - git-rustin
-- name: Git personal setup name
-  git_config:
-    name: user.name
-    scope: global
-    value: "RustLover69"
-  tags:
-  - git-rustin
-- name: Netflix
-  git_config:
-    name: user.email
-    scope: global
-    value: "mpaulson@netflix.com"
-  tags:
-  - git-netflix
-- name: Git personal setup name
-  git_config:
-    name: user.name
-    scope: global
-    value: "mpaulson"
-  tags:
-  - git-netflix
+    value: http://127.0.0.1:48157
+  tags: [git-vdi]
