@@ -93,6 +93,7 @@
     - zoxide
     - kubectx
     - kubectl
+    - kubecm
     - awscli
     - docker-credential-helper-ecr
   tags: [install, core, brew]
