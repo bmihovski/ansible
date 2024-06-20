@@ -20,7 +20,7 @@
       - python3-pip
       - dconf-editor
       - moreutils
-      - awscli
+      - postgresql-client
       - libstdc++-10-dev
       - g++-10-multilib
       - gcc-10-multilib
@@ -67,7 +67,7 @@
   ansible.builtin.set_fact:
     linuxbrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
     linuxbrew_path: /home/linuxbrew/.linuxbrew/bin
-  tags: [install, core]
+  tags: [install, core, brew]
 - name: Check if Starship is installed
   ansible.builtin.stat:
     path: /home/{{ lookup('env', 'USER') }}/.config/starship.toml
@@ -81,6 +81,21 @@
   args:
     executable: /bin/bash
   tags: [install, core]
+- name: Install packages with brew
+  ansible.builtin.command: '{{ linuxbrew_executable }} install {{ item }}'
+  environment:
+    HOME: /home/{{ lookup('env', 'USER') }}
+  args:
+    executable: /bin/bash
+  with_items:
+    - lazydocker
+    - lazygit
+    - zioxide
+    - kubectx
+    - kubectl
+    - awscli
+    - docker-credential-helper-ecr
+  tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
@@ -98,62 +113,4 @@
   become: false
   args:
     executable: /bin/bash
-  tags: [install, core]
-- name: Get Lazygit version
-  uri:
-    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
-    return_content: true
-  register: lazygit_release
-  tags: [install, core]
-- name: Extract Lazygit version
-  set_fact:
-    lazygit_version: "{{ lazygit_release.content | from_json | json_query('tag_name') | regex_replace('^v', '') }}"
-  tags: [install, core]
-- name: Download Lazygit
-  get_url:
-    url: https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz
-    dest: /tmp/lazygit.tar.gz
-  tags: [install, core]
-- name: Extract Lazygit
-  unarchive:
-    src: /tmp/lazygit.tar.gz
-    dest: /tmp
-    remote_src: true
-    creates: /tmp/lazygit
-  tags: [install, core]
-- name: Install Lazygit
-  become: true
-  copy:
-    src: /tmp/lazygit
-    dest: /usr/local/bin/lazygit
-    mode: '0755'
-  tags: [install, core]
-- name: Get Lazydocker version
-  uri:
-    url: https://api.github.com/repos/jesseduffield/lazydocker/releases/latest
-    return_content: true
-  register: lazydocker_release
-  tags: [install, core]
-- name: Extract Lazydocker version
-  set_fact:
-    lazydocker_version: "{{ lazydocker_release.content | from_json | json_query('tag_name') | regex_replace('^v', '') }}"
-  tags: [install, core]
-- name: Download Lazydocker
-  get_url:
-    url: https://github.com/jesseduffield/lazydocker/releases/latest/download/lazydocker_{{ lazydocker_version }}_Linux_x86_64.tar.gz
-    dest: /tmp/lazydocker.tar.gz
-  tags: [install, core]
-- name: Extract Lazydocker version
-  unarchive:
-    src: /tmp/lazydocker.tar.gz
-    dest: /tmp
-    remote_src: true
-    creates: /tmp/lazydocker
-  tags: [install, core]
-- name: Install Lazydocker
-  become: true
-  copy:
-    src: /tmp/lazygit
-    dest: /usr/local/bin/lazygit
-    mode: '0755'
   tags: [install, core]

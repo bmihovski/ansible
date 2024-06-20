@@ -9,26 +9,10 @@
       toolbox_install_for_user: "{{ lookup('env', 'USER') }}"
       toolbox_install_dir: /usr/local/bin
       tags: [install, core]
-    - role: githubixx.kubectl
-      become: true
-      tags: [install, core]
     - role: haxorof.docker_ce
       become: true
       docker_users: ["{{ lookup('env', 'USER') }}"]
       docker_compose: true
-      tags: [install, core]
-    - role: gantsign.oh-my-zsh
-      become: true
-      users:
-        - username: "{{ lookup('env', 'USER') }}"
-      plugins:
-        - git
-        - zsh-autosuggestions
-        - zsh-syntax-highlighting
-        - zsh-z
-        - kubectl
-      update_mode: auto
-      write_zshrc: false
       tags: [install, core]
   pre_tasks:
     - name: Update Apt
