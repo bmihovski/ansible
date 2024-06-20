@@ -20,6 +20,7 @@
       - python3-pip
       - dconf-editor
       - moreutils
+      - xclip
       - postgresql-client
       - libstdc++-10-dev
       - g++-10-multilib
