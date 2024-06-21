@@ -97,6 +97,15 @@
     - kubecm
     - awscli
     - docker-credential-helper-ecr
+    - jstkdng/programs/ueberzugpp
+    - yazi
+    - ffmpegthumbnailer
+    - unar
+    - jq
+    - poppler
+    - fd
+    - ripgrep
+    - fzf
   tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
