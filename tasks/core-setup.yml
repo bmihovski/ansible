@@ -103,6 +103,7 @@
     - fd
     - ripgrep
     - fzf
+    - pipx
   tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
