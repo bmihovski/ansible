@@ -79,15 +79,11 @@
   ansible.builtin.command: '{{ linuxbrew_executable }} install starship'
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
-  args:
-    executable: /bin/bash
   tags: [install, core]
 - name: Install packages with brew
   ansible.builtin.command: '{{ linuxbrew_executable }} install {{ item }}'
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
-  args:
-    executable: /bin/bash
   with_items:
     - lazydocker
     - lazygit
@@ -95,6 +91,7 @@
     - kubectx
     - kubectl
     - kubecm
+    - derailed/k9s/k9s
     - awscli
     - docker-credential-helper-ecr
     - jstkdng/programs/ueberzugpp
@@ -110,8 +107,6 @@
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
-  args:
-    executable: /bin/bash
   tags: [install, core]
 - name: Adding SDK Man to bash_profile
   environment:
@@ -122,6 +117,4 @@
 - name: Installing Java
   shell: source ~/.bash_profile && sdk install java 21.0.3-amzn
   become: false
-  args:
-    executable: /bin/bash
   tags: [install, core]
