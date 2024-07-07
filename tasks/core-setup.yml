@@ -1,4 +1,4 @@
----
+-
 - name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
   become: true
   apt:
@@ -104,6 +104,11 @@
     - ripgrep
     - fzf
     - pipx
+    - go
+  tags: [install, core, brew]
+- name: Install butterfish ai cli auto complete
+  become: false
+  shell: go install github.com/bakks/butterfish/cmd/butterfish@latest
   tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
