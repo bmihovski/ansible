@@ -94,7 +94,6 @@
     - derailed/k9s/k9s
     - awscli
     - docker-credential-helper-ecr
-    - jstkdng/programs/ueberzugpp
     - yazi
     - ffmpegthumbnailer
     - unar
@@ -121,6 +120,8 @@
   with_items: [source "$HOME/.sdkman/bin/sdkman-init.sh"]
   tags: [install, core]
 - name: Installing Java
+  args:
+    executable: /bin/bash
   shell: source ~/.bash_profile && sdk install java 21.0.3-amzn
   become: false
   tags: [install, core]

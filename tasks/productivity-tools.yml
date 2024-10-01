@@ -2,5 +2,5 @@
 - name: Install packages
   become: true
   apt:
-    name: [tmux, fzf, tldr, ripgrep]
+    name: [tmux, tldr]
   tags: [install, productivity]
