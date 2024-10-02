@@ -12,6 +12,15 @@
     accept_hostkey: true
     version: master
   tags: [install, dotfiles, stow]
+- name: Cloning tmux plugin
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
+    recursive: true
+    update: true
+    accept_hostkey: true
+    version: master
+  tags: [install, dotfiles, stow]
 - name: Stow dotfiles
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
