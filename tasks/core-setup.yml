@@ -110,6 +110,25 @@
   become: false
   shell: go install github.com/bakks/butterfish/cmd/butterfish@latest
   tags: [install, core, brew]
+- name: Clone ble.sh repository
+  become: false
+  git:
+    repo: 'https://github.com/akinomyoga/ble.sh.git'
+    dest: '{{ personal }}/ble.sh'
+    clone: yes
+    recursive: yes
+    depth: 1
+    update: no
+  tags: [install, ble.sh]
+
+- name: Install ble.sh
+  become: false
+  make:
+    chdir: '{{ personal }}/ble.sh'
+    target: install
+    params:
+      PREFIX: '{{ ansible_env.HOME }}/.local'
+  tags: [install, ble.sh]
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
