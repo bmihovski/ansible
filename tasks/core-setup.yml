@@ -1,4 +1,4 @@
--
+---
 - name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
   become: true
   apt:
@@ -26,7 +26,8 @@
       - g++-10-multilib
       - gcc-10-multilib
       - fonts-powerline
-  tags: [install, core]
+      - gawk
+  tags: [install, core, brew]
 
 # Install Nerd font
 - name: Install Jetbrains Nerd Font
@@ -105,7 +106,7 @@
     - pipx
     - go
     - atuin
-  tags: [install, core, brew]
+  tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
   shell: go install github.com/bakks/butterfish/cmd/butterfish@latest
@@ -113,14 +114,13 @@
 - name: Clone ble.sh repository
   become: false
   git:
-    repo: 'https://github.com/akinomyoga/ble.sh.git'
+    repo: https://github.com/akinomyoga/ble.sh.git
     dest: '{{ personal }}/ble.sh'
-    clone: yes
-    recursive: yes
+    clone: true
+    recursive: true
     depth: 1
-    update: no
+    update: false
   tags: [install, ble.sh]
-
 - name: Install ble.sh
   become: false
   make:
