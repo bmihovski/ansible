@@ -106,6 +106,8 @@
     - pipx
     - go
     - atuin
+    - aws-cdk
+    - postgresql
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
