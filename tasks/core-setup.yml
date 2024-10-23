@@ -108,10 +108,11 @@
     - atuin
     - aws-cdk
     - postgresql
+    - tmux
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
-  shell: go install github.com/bakks/butterfish/cmd/butterfish@latest
+  shell: source ~/.bashrc && go install github.com/bakks/butterfish/cmd/butterfish@latest
   tags: [install, core, brew]
 - name: Clone ble.sh repository
   become: false

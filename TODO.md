@@ -22,5 +22,8 @@ no vault
 make it clone
 --become-user theprimeagen
 -t install . I just keep forgetting this...
+example
+
+ansible-playbook -t install local.yml -vvv --ask-become-pass
 
 - clone it with https then change remote to ssh once ssh is up.
