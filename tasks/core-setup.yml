@@ -109,6 +109,7 @@
     - aws-cdk
     - postgresql
     - tmux
+    - doxygen
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
