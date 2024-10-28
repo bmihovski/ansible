@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Undo zsh
-uninstall_oh_my_zsh
-chsh /bin/bash
-sudo apt purge zsh
 
 # Undo Core Install
 sudo apt -y purge curl htop stow tmux build-essential fzf lsof ccache python3-pip xclip dconf-editor clangd l

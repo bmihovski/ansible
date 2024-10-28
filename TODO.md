@@ -1,8 +1,3 @@
-## Ohmyzsh
-
-- doesn't work because of the user.
-- also you cannot re-install it or else it breaks.
-  - had to put a little file exist protector
 
 ### Permissions with ssh
 
