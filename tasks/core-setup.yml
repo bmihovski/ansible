@@ -92,6 +92,7 @@
     - kubecm
     - derailed/k9s/k9s
     - awscli
+    - awscli-local
     - docker-credential-helper-ecr
     - yazi
     - ffmpegthumbnailer
