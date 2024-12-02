@@ -109,13 +109,13 @@
     - postgresql
     - tmux
     - doxygen
-    - rclone 
+    - rclone
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
   args:
     executable: /bin/bash
-  shell: source ~/.bashrc && go install github.com/bakks/butterfish/cmd/butterfish@latest
+  shell: /home/linuxbrew/.linuxbrew/bin/go install github.com/bakks/butterfish/cmd/butterfish@latest
   tags: [install, core, brew]
 - name: Clone ble.sh repository
   become: false
