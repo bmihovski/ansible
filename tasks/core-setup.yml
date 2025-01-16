@@ -21,9 +21,9 @@
       - moreutils
       - xclip
       - postgresql-client
-      - libstdc++-14-dev
-      - g++-14-multilib
-      - gcc-14-multilib
+      - libstdc++-10-dev
+      - g++-10-multilib
+      - gcc-10-multilib
       - fonts-powerline
       - gawk
       - alacritty
