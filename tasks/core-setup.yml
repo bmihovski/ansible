@@ -110,6 +110,7 @@
     - tmux
     - doxygen
     - rclone
+    - aws-sso-util
     - flawfinder
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
