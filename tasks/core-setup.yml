@@ -112,6 +112,8 @@
     - rclone
     - aws-sso-util
     - flawfinder
+    - bazelisk
+    - git-lfs
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
