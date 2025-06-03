@@ -45,7 +45,7 @@
         owner: "{{ lookup('env', 'USER') }}"
     - name: Font cache update
       action: command fc-cache -fv
-  tags: [install, core]
+  tags: [install, core, nerd]
 # Installs [HomeBrew](https://brew.sh/) prompt
 - name: Check if HomeBrew is installed
   ansible.builtin.stat:
@@ -114,6 +114,15 @@
     - flawfinder
     - bazelisk
     - git-lfs
+    - uv
+    - eza
+  tags: install, core, brew]
+- name: Install cask packages with brew
+  ansible.builtin.command: '{{ linuxbrew_executable }} install --cask {{ item }}'
+  environment:
+    HOME: /home/{{ lookup('env', 'USER') }}
+  with_items:
+    - font-open-dyslexic-nerd-font
   tags: install, core, brew]
 - name: Install butterfish ai cli auto complete
   become: false
