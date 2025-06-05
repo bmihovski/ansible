@@ -130,6 +130,22 @@
     executable: /bin/bash
   shell: /home/linuxbrew/.linuxbrew/bin/go install github.com/bakks/butterfish/cmd/butterfish@latest
   tags: [install, core, brew]
+- name: Clone hack fonts repository
+  become: false
+  git:
+    repo: https://github.com/vimhack/nerd-fonts-patched.git
+    dest: '{{ personal }}/nerd-fonts-patched'
+    clone: true
+    recursive: true
+    depth: 1
+    update: false
+  tags: [install, core, nerd]
+- name: Install nerd fonts
+  become: false
+  args:
+    executable: /bin/bash
+  shell: cd $HOME/Privatespace/nerd-fonts-patched && ./install.sh
+  tags: [install, core, nerd]
 - name: Clone ble.sh repository
   become: false
   git:
