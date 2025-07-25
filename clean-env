@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 
 # Undo Core Install
-sudo apt -y purge curl htop stow tmux build-essential fzf lsof ccache python3-pip xclip dconf-editor clangd l
+brew uninstall curl stow tmux build-essential fzf lsof ccache python3-pip xclip clangd l

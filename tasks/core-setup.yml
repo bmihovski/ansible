@@ -1,55 +1,7 @@
-- name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
-  become: true
-  apt:
-    name: [build-essential, cmake, pkg-config, libpthread-stubs0-dev]
-  tags: [install, neovim, core]
-- name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
-  become: true
-  apt:
-    name: [lua5.1, unzip, libtool, libtool-bin, gettext]
-  tags: [install, neovim, core]
-- name: Install System Packages 3 (the rest)
-  become: true
-  apt:
-    name:
-      - curl
-      - htop
-      - lsof
-      - ccache
-      - python3-pip
-      - dconf-editor
-      - moreutils
-      - xclip
-      - postgresql-client
-      - libstdc++-14-dev
-      - g++-14-multilib
-      - gcc-14-multilib
-      - fonts-powerline
-      - gawk
-      - alacritty
-  tags: [install, core, brew]
-# Install Nerd font
-- name: Install Jetbrains Nerd Font
-  block:
-    - name: Create Directory
-      ansible.builtin.file:
-        path: /home/{{ lookup('env', 'USER') }}/.fonts/JetBrainsMonoNerd
-        state: directory
-        mode: '0755'
-        owner: "{{ lookup('env', 'USER') }}"
-    - name: Download
-      ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-        dest: /home/{{ lookup('env', 'USER') }}/.fonts/JetBrainsMonoNerd
-        remote_src: true
-        owner: "{{ lookup('env', 'USER') }}"
-    - name: Font cache update
-      action: command fc-cache -fv
-  tags: [install, core, nerd]
 # Installs [HomeBrew](https://brew.sh/) prompt
 - name: Check if HomeBrew is installed
   ansible.builtin.stat:
-    path: /home/linuxbrew/.linuxbrew/bin/brew
+    path: /opt/homebrew/bin/brew
   register: brew
   tags: [install, core]
 - name: Download & Install HomeBrew
@@ -61,122 +13,110 @@
         dest: /tmp/brew_install.sh
         mode: '775'
     - name: Run Installer Script
+      become: false
       ansible.builtin.shell: NONINTERACTIVE=1 /tmp/brew_install.sh
   tags: [install, core]
 - name: Set LinuxBrew Executable Path
   ansible.builtin.set_fact:
-    linuxbrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
-    linuxbrew_path: /home/linuxbrew/.linuxbrew/bin
+    linuxbrew_executable: /opt/homebrew/bin/brew
+    linuxbrew_path: /opt/homebrew/bin
   tags: [install, core, brew]
+- name: Install community.general collection
+  command: ansible-galaxy collection install community.general
+  register: install_general
+  changed_when: '"Nothing to do." not in install_general.stdout'
+  tags: [install, core]
 - name: Check if Starship is installed
   ansible.builtin.stat:
-    path: /home/{{ lookup('env', 'USER') }}/.config/starship.toml
+    path: /Users/{{ lookup('env', 'USER') }}/.config/starship.toml
   register: starship
   tags: [install, core]
 - name: Install
   when: not starship.stat.exists
   ansible.builtin.command: '{{ linuxbrew_executable }} install starship'
   environment:
-    HOME: /home/{{ lookup('env', 'USER') }}
+    HOME: /Users/{{ lookup('env', 'USER') }}
   tags: [install, core]
 - name: Install packages with brew
-  ansible.builtin.command: '{{ linuxbrew_executable }} install {{ item }}'
-  environment:
-    HOME: /home/{{ lookup('env', 'USER') }}
-  with_items:
-    - lazydocker
-    - lazygit
-    - zoxide
-    - kubectx
-    - kubectl
-    - kubecm
-    - derailed/k9s/k9s
-    - awscli
-    - awscli-local
-    - docker-credential-helper-ecr
-    - yazi
-    - ffmpegthumbnailer
-    - unar
-    - jq
-    - poppler
-    - fd
-    - ripgrep
-    - fzf
-    - pipx
-    - go
-    - atuin
-    - aws-cdk
-    - postgresql
-    - tmux
-    - doxygen
-    - rclone
-    - aws-sso-util
-    - flawfinder
-    - bazelisk
-    - git-lfs
-    - uv
-    - eza
+  community.general.homebrew:
+    name:
+      - node
+      - tmux
+      - curl
+      - htop
+      - lsof
+      - ccache
+      - moreutils
+      - xclip
+      - gcc
+      - font-anonymice-powerline
+      - gawk
+      - alacritty
+      - stow
+      - sublime-text
+      - font-jetbrains-mono-nerd-font
+      - cmake
+      - lua
+      - unzip
+      - libtool
+      - gettext
+      - docker
+      - lazydocker
+      - lazygit
+      - zoxide
+      - kubectx
+      - kubectl
+      - kubecm
+      - k9s
+      - awscli
+      - awscli-local
+      - docker-credential-helper-ecr
+      - yazi
+      - ffmpegthumbnailer
+      - unar
+      - jq
+      - poppler
+      - fd
+      - ripgrep
+      - fzf
+      - pipx
+      - go
+      - atuin
+      - aws-cdk
+      - tmux
+      - doxygen
+      - rclone
+      - aws-sso-util
+      - flawfinder
+      - bazelisk
+      - git-lfs
+      - uv
+      - eza
+      - font-open-dyslexic-nerd-font
+      - neovim
+      - meld
+      - gawk
+      - grep
+      - gnu-sed
+      - coreutils
+      - git
+      - json5
+      - luarocks
+      - rust
+      - deno
+      - zsh
+      - sublime-merge
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - git
   tags: install, core, brew]
-- name: Install cask packages with brew
-  ansible.builtin.command: '{{ linuxbrew_executable }} install --cask {{ item }}'
-  environment:
-    HOME: /home/{{ lookup('env', 'USER') }}
-  with_items:
-    - font-open-dyslexic-nerd-font
-  tags: install, core, brew]
-- name: Install butterfish ai cli auto complete
-  become: false
-  args:
-    executable: /bin/bash
-  shell: /home/linuxbrew/.linuxbrew/bin/go install github.com/bakks/butterfish/cmd/butterfish@latest
-  tags: [install, core, brew]
-- name: Clone hack fonts repository
-  become: false
-  git:
-    repo: https://github.com/vimhack/nerd-fonts-patched.git
-    dest: '{{ personal }}/nerd-fonts-patched'
-    clone: true
-    recursive: true
-    depth: 1
-    update: false
-  tags: [install, core, nerd]
-- name: Install nerd fonts
-  become: false
-  args:
-    executable: /bin/bash
-  shell: cd $HOME/Privatespace/nerd-fonts-patched && ./install.sh
-  tags: [install, core, nerd]
-- name: Clone ble.sh repository
-  become: false
-  git:
-    repo: https://github.com/akinomyoga/ble.sh.git
-    dest: '{{ personal }}/ble.sh'
-    clone: true
-    recursive: true
-    depth: 1
-    update: false
-  tags: [install, ble.sh]
-- name: Install ble.sh
-  become: false
-  make:
-    chdir: '{{ personal }}/ble.sh'
-    target: install
-    params:
-      PREFIX: '{{ ansible_env.HOME }}/.local'
-  tags: [install, ble.sh]
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
   tags: [install, core]
-- name: Adding SDK Man to bash_profile
-  environment:
-    HOME: /home/{{ lookup('env', 'USER') }}
-  lineinfile: path=$HOME/.bash_profile line={{ item }} state=present create=yes
-  with_items: [source "$HOME/.sdkman/bin/sdkman-init.sh"]
-  tags: [install, core]
 - name: Installing Java
   args:
     executable: /bin/bash
-  shell: source ~/.bash_profile && sdk install java 21.0.3-amzn
+  shell: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 24.0.2-amzn
   become: false
   tags: [install, core]

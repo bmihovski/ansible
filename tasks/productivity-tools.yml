@@ -1,6 +1,0 @@
----
-- name: Install packages
-  become: true
-  apt:
-    name: [tmux, tldr]
-  tags: [install, productivity]
