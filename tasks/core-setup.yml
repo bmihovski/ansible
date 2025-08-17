@@ -109,7 +109,23 @@
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - git
+      - vlc
+      - obs
+      - onlyoffice
+      - vivaldi
+      - keka
+      - betterdisplay
+      - tidal
+      - bash
+      - avidemux
+      - bluetility
+      - tor-browser
+      - viber
   tags: install, core, brew]
+- name: install Rosetta2 required for non arm software
+  become: false
+  shell: softwareupdate --install-rosetta --agree-to-license
+  tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
