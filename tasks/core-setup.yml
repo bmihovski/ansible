@@ -121,6 +121,26 @@
       - bluetility
       - tor-browser
       - viber
+      - gemini-cli
+      - winbox
+      - jannis-baum/tap/vivify
+      - dos2unix
+      - oka-unarchiver
+      - openmtp
+      - calible
+      - sonos
+      - pngpaste
+      - lynx
+      - gh
+      - viu
+      - chafa
+      - wget
+      - composer
+      - julia
+      - android-platform-tools
+      - nperf
+      - eqmac
+      - isort
   tags: install, core, brew]
 - name: install Rosetta2 required for non arm software
   become: false
