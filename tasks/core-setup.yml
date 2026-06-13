@@ -142,7 +142,6 @@
       - microsoft-teams
       - delta
       - lm-studio
-      - trash
       - oven-sh/bun/bun
       - gs
       - antigravity-ide
