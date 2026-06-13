@@ -119,7 +119,6 @@
       - wget
       - composer
       - julia
-      - android-platform-tools
       - nperf
       - isort
       - trash-cli
