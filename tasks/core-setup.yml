@@ -1,6 +1,7 @@
 - name: Install System Packages
-  apt:
-    name:
+  become: true
+  ansible.builtin.apt:
+    pkg:
       - dconf-editor
       - alacritty
       - meld
