@@ -1,8 +1,4 @@
 ---
-- name: Installing stow
-  apt: name=stow
-  become: true
-  tags: [install, dotfiles, stow]
 - name: Cloning .dotfiles
   ansible.builtin.git:
     repo: https://github.com/bmihovski/.dotfiles.git
@@ -11,7 +7,7 @@
     update: true
     accept_hostkey: true
     version: master
-  tags: [install, dotfiles, stow]
+  tags: [dotfiles, stow]
 - name: Cloning tmux plugin
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
@@ -20,10 +16,10 @@
     update: true
     accept_hostkey: true
     version: master
-  tags: [install, dotfiles, stow]
+  tags: [dotfiles, stow]
 - name: Stow dotfiles
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
     ANSIBLE_VAULT_PASSWORD_FILE: /home/{{ lookup('env', 'USER') }}/.vault_pass.txt
   shell: cd $HOME/Privatespace/.dotfiles && ./ubuntu && ./process decrypt
-  tags: [install, dotfiles, stow]
+  tags: [dotfiles, stow]

@@ -1,51 +1,3 @@
-- name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
-  become: true
-  apt:
-    name: [build-essential, cmake, pkg-config, libpthread-stubs0-dev]
-  tags: [install, neovim, core]
-- name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
-  become: true
-  apt:
-    name: [lua5.1, unzip, libtool, libtool-bin, gettext]
-  tags: [install, neovim, core]
-- name: Install System Packages 3 (the rest)
-  become: true
-  apt:
-    name:
-      - curl
-      - htop
-      - lsof
-      - ccache
-      - python3-pip
-      - dconf-editor
-      - moreutils
-      - xclip
-      - postgresql-client
-      - libstdc++-14-dev
-      - g++-14-multilib
-      - gcc-14-multilib
-      - fonts-powerline
-      - gawk
-      - alacritty
-  tags: [install, core, brew]
-# Install Nerd font
-- name: Install Jetbrains Nerd Font
-  block:
-    - name: Create Directory
-      ansible.builtin.file:
-        path: /home/{{ lookup('env', 'USER') }}/.fonts/JetBrainsMonoNerd
-        state: directory
-        mode: '0755'
-        owner: "{{ lookup('env', 'USER') }}"
-    - name: Download
-      ansible.builtin.unarchive:
-        src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-        dest: /home/{{ lookup('env', 'USER') }}/.fonts/JetBrainsMonoNerd
-        remote_src: true
-        owner: "{{ lookup('env', 'USER') }}"
-    - name: Font cache update
-      action: command fc-cache -fv
-  tags: [install, core, nerd]
 # Installs [HomeBrew](https://brew.sh/) prompt
 - name: Check if HomeBrew is installed
   ansible.builtin.stat:
@@ -80,90 +32,126 @@
     HOME: /home/{{ lookup('env', 'USER') }}
   tags: [install, core]
 - name: Install packages with brew
-  ansible.builtin.command: '{{ linuxbrew_executable }} install {{ item }}'
-  environment:
-    HOME: /home/{{ lookup('env', 'USER') }}
-  with_items:
-    - lazydocker
-    - lazygit
-    - zoxide
-    - kubectx
-    - kubectl
-    - kubecm
-    - derailed/k9s/k9s
-    - awscli
-    - awscli-local
-    - docker-credential-helper-ecr
-    - yazi
-    - ffmpegthumbnailer
-    - unar
-    - jq
-    - poppler
-    - fd
-    - ripgrep
-    - fzf
-    - pipx
-    - go
-    - atuin
-    - aws-cdk
-    - postgresql
-    - tmux
-    - doxygen
-    - rclone
-    - aws-sso-util
-    - flawfinder
-    - bazelisk
-    - git-lfs
-    - uv
-    - eza
+  community.general.homebrew:
+    name:
+      - node
+      - tmux
+      - curl
+      - htop
+      - lsof
+      - ccache
+      - moreutils
+      - xclip
+      - gcc
+      - font-anonymice-powerline
+      - gawk
+      - alacritty
+      - stow
+      - sublime-text
+      - font-jetbrains-mono-nerd-font
+      - cmake
+      - lua
+      - unzip
+      - libtool
+      - gettext
+      - docker
+      - lazydocker
+      - lazygit
+      - zoxide
+      - kubectx
+      - kubectl
+      - kubecm
+      - k9s
+      - awscli
+      - awscli-local
+      - docker-credential-helper-ecr
+      - yazi
+      - ffmpegthumbnailer
+      - unar
+      - jq
+      - poppler
+      - fd
+      - ripgrep
+      - fzf
+      - pipx
+      - go
+      - atuin
+      - aws-cdk
+      - tmux
+      - doxygen
+      - rclone
+      - aws-sso-util
+      - flawfinder
+      - bazelisk
+      - git-lfs
+      - uv
+      - eza
+      - fonts-encodings
+      - font-opendyslexic
+      - font-opendyslexic-nerd-font
+      - neovim
+      - meld
+      - gawk
+      - grep
+      - gnu-sed
+      - coreutils
+      - git
+      - json5
+      - luarocks
+      - rust
+      - deno
+      - zsh
+      - sublime-merge
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - git
+      - vlc
+      - obs
+      - onlyoffice
+      - vivaldi
+      - bash
+      - bluetility
+      - tor-browser
+      - viber
+      - gemini-cli
+      - winbox
+      - jannis-baum/tap/vivify
+      - dos2unix
+      - calible
+      - sonos
+      - pngpaste
+      - lynx
+      - gh
+      - viu
+      - chafa
+      - wget
+      - composer
+      - julia
+      - android-platform-tools
+      - nperf
+      - eqmac
+      - isort
+      - trash-cli
+      - docx2txt
+      - antiword
+      - ouch
+      - cmocka
+      - wailbrew
+      - postman
+      - googletest
+      - lcov
+      - mikhailai/misc/usbutils
+      - microsoft-teams
+      - delta
+      - lm-studio
+      - trash
+      - oven-sh/bun/bun
+      - gs
+      - antigravity-ide
+      - dbeaver-community
+      - ollama
+      - bat
   tags: install, core, brew]
-- name: Install cask packages with brew
-  ansible.builtin.command: '{{ linuxbrew_executable }} install --cask {{ item }}'
-  environment:
-    HOME: /home/{{ lookup('env', 'USER') }}
-  with_items:
-    - font-open-dyslexic-nerd-font
-  tags: install, core, brew]
-- name: Install butterfish ai cli auto complete
-  become: false
-  args:
-    executable: /bin/bash
-  shell: /home/linuxbrew/.linuxbrew/bin/go install github.com/bakks/butterfish/cmd/butterfish@latest
-  tags: [install, core, brew]
-- name: Clone hack fonts repository
-  become: false
-  git:
-    repo: https://github.com/vimhack/nerd-fonts-patched.git
-    dest: '{{ personal }}/nerd-fonts-patched'
-    clone: true
-    recursive: true
-    depth: 1
-    update: false
-  tags: [install, core, nerd]
-- name: Install nerd fonts
-  become: false
-  args:
-    executable: /bin/bash
-  shell: cd $HOME/Privatespace/nerd-fonts-patched && ./install.sh
-  tags: [install, core, nerd]
-- name: Clone ble.sh repository
-  become: false
-  git:
-    repo: https://github.com/akinomyoga/ble.sh.git
-    dest: '{{ personal }}/ble.sh'
-    clone: true
-    recursive: true
-    depth: 1
-    update: false
-  tags: [install, ble.sh]
-- name: Install ble.sh
-  become: false
-  make:
-    chdir: '{{ personal }}/ble.sh'
-    target: install
-    params:
-      PREFIX: '{{ ansible_env.HOME }}/.local'
-  tags: [install, ble.sh]
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
@@ -177,6 +165,6 @@
 - name: Installing Java
   args:
     executable: /bin/bash
-  shell: source ~/.bash_profile && sdk install java 21.0.3-amzn
+  shell: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 24.0.2-amzn
   become: false
   tags: [install, core]
