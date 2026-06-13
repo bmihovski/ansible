@@ -110,7 +110,6 @@
       - onlyoffice
       - vivaldi
       - bash
-      - bluetility
       - tor-browser
       - viber
       - gemini-cli
@@ -133,7 +132,6 @@
       - antiword
       - ouch
       - cmocka
-      - wailbrew
       - postman
       - googletest
       - lcov
