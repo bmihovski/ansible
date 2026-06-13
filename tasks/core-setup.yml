@@ -140,7 +140,6 @@
       - mikhailai/misc/usbutils
       - microsoft-teams
       - delta
-      - lm-studio
       - oven-sh/bun/bun
       - gs
       - antigravity-ide
