@@ -1,7 +1,6 @@
 - name: Install System Packages
   become: true
   become_method: sudo
-  become_user: "{{ lookup('env', 'USER') }}"
   ansible.builtin.apt:
     pkg:
       - dconf-editor
