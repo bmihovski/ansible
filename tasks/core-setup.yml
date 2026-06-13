@@ -117,8 +117,8 @@
       - winbox
       - jannis-baum/tap/vivify
       - dos2unix
-      - pngpaste
       - lynx
+      - claude-code
       - gh
       - viu
       - chafa
@@ -127,7 +127,6 @@
       - julia
       - android-platform-tools
       - nperf
-      - eqmac
       - isort
       - trash-cli
       - docx2txt
