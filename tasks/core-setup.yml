@@ -4,6 +4,7 @@
     name:
       - dconf-editor
       - alacritty
+      - meld
 - name: Check if HomeBrew is installed
   ansible.builtin.stat:
     path: /home/linuxbrew/.linuxbrew/bin/brew
@@ -91,7 +92,6 @@
       - font-opendyslexic
       - font-opendyslexic-nerd-font
       - neovim
-      - meld
       - gawk
       - grep
       - gnu-sed
