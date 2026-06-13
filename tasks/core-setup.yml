@@ -49,7 +49,6 @@
       - gcc
       - font-anonymice-powerline
       - stow
-      - sublime-text
       - font-jetbrains-mono-nerd-font
       - cmake
       - lua
@@ -103,7 +102,6 @@
       - rust
       - deno
       - zsh
-      - sublime-merge
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - git
