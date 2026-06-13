@@ -18,3 +18,4 @@
     name: "{{ lookup('env', 'USER') }}"
     shell: /home/linuxbrew/.linuxbrew/bin/zsh
     state: present
+  tags: [install, zsh]
