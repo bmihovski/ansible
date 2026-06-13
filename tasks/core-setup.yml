@@ -48,7 +48,6 @@
       - xclip
       - gcc
       - font-anonymice-powerline
-      - alacritty
       - stow
       - sublime-text
       - font-jetbrains-mono-nerd-font
