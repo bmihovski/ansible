@@ -105,8 +105,6 @@
       - zsh-autosuggestions
       - zsh-syntax-highlighting
       - git
-      - vlc
-      - obs
       - bash
       - gemini-cli
       - jannis-baum/tap/vivify
