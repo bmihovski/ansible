@@ -142,8 +142,6 @@
       - delta
       - oven-sh/bun/bun
       - gs
-      - antigravity-ide
-      - dbeaver-community
       - ollama
       - bat
   tags: install, core, brew]
