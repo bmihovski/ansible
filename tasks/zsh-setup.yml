@@ -1,12 +1,10 @@
----
 - name: Check that the somefile.conf exists
   stat:
     path: "{{ lookup('env', 'HOME') }}/.oh-my-zsh"
   register: oh_my_stats
   tags: [install]
 - name: Oh-My-Zsh
-  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
-    > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
+  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
   tags: [install]
   when: oh_my_stats.stat.exists == False
   become_user: "{{ lookup('env', 'USER') }}"
@@ -15,3 +13,8 @@
     repo: https://github.com/zsh-users/zsh-autosuggestions.git
     dest: ~/.oh-my-zsh/plugins/zsh-autosuggestions
   tags: [install]
+- name: Set user shell to zsh
+  ansible.builtin.user:
+    name: "{{ lookup('env', 'USER') }}"
+    shell: /home/linuxbrew/.linuxbrew/bin/zsh
+    state: present
