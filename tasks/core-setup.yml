@@ -92,7 +92,9 @@
       - git-lfs
       - uv
       - eza
-      - font-open-dyslexic-nerd-font
+      - fonts-encodings
+      - font-opendyslexic
+      - font-opendyslexic-nerd-font
       - neovim
       - meld
       - gawk
@@ -141,6 +143,26 @@
       - nperf
       - eqmac
       - isort
+      - trash-cli
+      - docx2txt
+      - antiword
+      - ouch
+      - cmocka
+      - wailbrew
+      - postman
+      - googletest
+      - lcov
+      - mikhailai/misc/usbutils
+      - microsoft-teams
+      - delta
+      - lm-studio
+      - trash
+      - oven-sh/bun/bun
+      - gs
+      - antigravity-ide
+      - dbeaver-community
+      - ollama
+      - bat
   tags: install, core, brew]
 - name: install Rosetta2 required for non arm software
   become: false
