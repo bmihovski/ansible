@@ -107,8 +107,6 @@
       - git
       - vlc
       - obs
-      - onlyoffice
-      - vivaldi
       - bash
       - gemini-cli
       - jannis-baum/tap/vivify
