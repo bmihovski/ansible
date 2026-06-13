@@ -5,6 +5,7 @@
       - dconf-editor
       - alacritty
       - meld
+  tags: [install, core]
 - name: Check if HomeBrew is installed
   ansible.builtin.stat:
     path: /home/linuxbrew/.linuxbrew/bin/brew
@@ -144,6 +145,6 @@
 - name: Installing Java
   args:
     executable: /bin/bash
-  shell: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 24.0.2-amzn
+  shell: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 21.0.11-amzn
   become: false
   tags: [install, core]
