@@ -40,7 +40,7 @@
     HOME: /home/{{ lookup('env', 'USER') }}
   tags: [install, core]
 - name: Install packages with brew
-  community.general.homebrew:
+  community.general.homebrew_cask:
     state: installed
     name:
       - node
