@@ -22,9 +22,3 @@
     ANSIBLE_VAULT_PASSWORD_FILE: /home/{{ lookup('env', 'USER') }}/.vault_pass.txt
   shell: cd $HOME/Privatespace/.dotfiles && ./ubuntu && ./process decrypt
   tags: [dotfiles, stow]
-- name: Setup brew env for zsh
-  become: false
-  args:
-    executable: /bin/bash
-  shell: echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.zsh_profile
-  tags: [dotfiles, stow, zsh]
