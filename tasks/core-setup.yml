@@ -132,7 +132,7 @@
       - gs
       - ollama
       - bat
-  tags: install, core, brew]
+  tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
   shell: curl -s 'https://get.sdkman.io' | bash
