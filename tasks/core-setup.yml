@@ -41,7 +41,7 @@
   tags: [install, core]
 - name: Install packages with brew
   community.general.homebrew:
-    force_formula: true
+    state: installed
     name:
       - node
       - tmux
