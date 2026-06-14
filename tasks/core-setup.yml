@@ -39,11 +39,14 @@
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
   tags: [install, core]
-- name: Install packages with brew
-  community.general.homebrew_cask:
-    state: installed
+- name: Install brew formula
+  community.general.homebrew:
     name:
       - node
+  tags: [install, core, brew]
+- name: Install packages with brew
+  community.general.homebrew_cask:
+    name:
       - tmux
       - curl
       - lsof
