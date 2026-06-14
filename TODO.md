@@ -12,6 +12,10 @@ make it clone
 -t install . I just keep forgetting this...
 example
 
+## Set Ansible vault password
+
+Create ~/.vault_pass.txt put your password
+
 ## Install software dependencies
 
 ansible-playbook -t install local.yml -vvv --ask-become-pass
@@ -19,6 +23,8 @@ ansible-playbook -t install local.yml -vvv --ask-become-pass
 ## Apply apps configuration
 
 ansible-playbook -t dotfiles local.yml -vvv --ask-become-pass
+
+pipx install vectorcode
 
 - clone it with https then change remote to ssh once ssh is up.
 
