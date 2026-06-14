@@ -39,15 +39,11 @@
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
   tags: [install, core]
-- name: Install brew taps
-  community.general.homebrew_tap:
-    name:
-      - mikhailai/misc/usbutils
-      - oven-sh/bun/bun
-  tags: [install, core, brew]
 - name: Install packages with brew
   community.general.homebrew:
     name:
+      - mikhailai/misc/usbutils
+      - oven-sh/bun/bun
       - jannis-baum/tap/vivify
       - node
       - tmux
