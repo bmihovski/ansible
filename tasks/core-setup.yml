@@ -129,6 +129,7 @@
       - gs
       - ollama
       - bat
+      - tree-sitter-cli
   tags: [install, core, brew]
 - name: Installing SDK Man
   become: false
