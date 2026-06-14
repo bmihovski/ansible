@@ -42,13 +42,13 @@
 - name: Install brew taps
   community.general.homebrew_tap:
     name:
-      - jannis-baum/tap/vivify
       - mikhailai/misc/usbutils
       - oven-sh/bun/bun
   tags: [install, core, brew]
 - name: Install packages with brew
   community.general.homebrew:
     name:
+      - jannis-baum/tap/vivify
       - node
       - tmux
       - curl
