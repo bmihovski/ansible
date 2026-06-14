@@ -39,14 +39,17 @@
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
   tags: [install, core]
-- name: Install brew formula
+- name: Install brew taps
+  community.general.homebrew_tap:
+    name:
+      - jannis-baum/tap/vivify
+      - mikhailai/misc/usbutils
+      - oven-sh/bun/bun
+  tags: [install, core, brew]
+- name: Install packages with brew
   community.general.homebrew:
     name:
       - node
-  tags: [install, core, brew]
-- name: Install packages with brew
-  community.general.homebrew_cask:
-    name:
       - tmux
       - curl
       - lsof
@@ -112,7 +115,6 @@
       - git
       - bash
       - gemini-cli
-      - jannis-baum/tap/vivify
       - dos2unix
       - lynx
       - claude-code
@@ -130,9 +132,7 @@
       - cmocka
       - googletest
       - lcov
-      - mikhailai/misc/usbutils
       - delta
-      - oven-sh/bun/bun
       - gs
       - ollama
       - bat
