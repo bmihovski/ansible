@@ -5,7 +5,7 @@ I think its a user issue. I think that if I redo it with --become-user theprimea
 remove all become_user root
 
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
- https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+ <https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim>'
 
 ### NVIM
 
@@ -18,7 +18,9 @@ make it clone
 --become-user theprimeagen
 -t install . I just keep forgetting this...
 example
-
+Create ~/.vault_pass.txt put your password
 ansible-playbook -t install local.yml -vvv --ask-become-pass
+ansible-playbook -t dotfiles local.yml -vvv --ask-become-pass
+pipx install vectorcode
 
 - clone it with https then change remote to ssh once ssh is up.
