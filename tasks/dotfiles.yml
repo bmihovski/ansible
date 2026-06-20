@@ -19,7 +19,7 @@
   tags: [dotfiles, stow]
 - name: Stow dotfiles
   environment:
-    HOME: {{ lookup('env', 'HOME') }}
-    ANSIBLE_VAULT_PASSWORD_FILE: {{ lookup('env', 'HOME') }}/.vault_pass.txt
+    HOME: "{{ lookup('env', 'HOME') }}"
+    ANSIBLE_VAULT_PASSWORD_FILE: "{{ lookup('env', 'HOME') }}/.vault_pass.txt"
   shell: cd $HOME/Privatespace/.dotfiles && ./mac && ./process decrypt
   tags: [dotfiles, stow]
