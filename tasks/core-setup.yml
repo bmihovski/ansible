@@ -37,6 +37,14 @@
   environment:
     HOME: /Users/{{ lookup('env', 'USER') }}
   tags: [install, core]
+- name: Install brew taps
+  community.general.homebrew_tap:
+    name:
+      - ntrezowan/alacritty
+      - oven-sh/bun
+      - mikhailai/misc
+      - jannis-baum/tap
+  tags: install, core, brew]
 - name: Install packages with brew
   community.general.homebrew:
     name:
@@ -51,7 +59,7 @@
       - gcc
       - font-anonymice-powerline
       - gawk
-      - alacritty
+      - alacritty-custom
       - stow
       - sublime-text
       - font-jetbrains-mono-nerd-font
@@ -125,7 +133,7 @@
       - viber
       - gemini-cli
       - winbox
-      - jannis-baum/tap/vivify
+      - vivify
       - dos2unix
       - oka-unarchiver
       - openmtp
@@ -152,12 +160,12 @@
       - postman
       - googletest
       - lcov
-      - mikhailai/misc/usbutils
+      - usbutils
       - microsoft-teams
       - delta
       - lm-studio
       - trash
-      - oven-sh/bun/bun
+      - bun
       - gs
       - antigravity-ide
       - dbeaver-community
