@@ -185,8 +185,6 @@
   shell: curl -s 'https://get.sdkman.io' | bash
   tags: [install, core]
 - name: Installing Java
-  args:
-    executable: /opt/homebrew/bin/bash
   shell: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 24.0.2-amzn
   become: false
   tags: [install, core]
