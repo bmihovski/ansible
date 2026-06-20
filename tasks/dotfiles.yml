@@ -21,5 +21,5 @@
   environment:
     HOME: /home/{{ lookup('env', 'USER') }}
     ANSIBLE_VAULT_PASSWORD_FILE: /home/{{ lookup('env', 'USER') }}/.vault_pass.txt
-  shell: cd $HOME/Privatespace/.dotfiles && ./ubuntu && ./process decrypt
+  shell: cd $HOME/Privatespace/.dotfiles && ./mac && ./process decrypt
   tags: [dotfiles, stow]
