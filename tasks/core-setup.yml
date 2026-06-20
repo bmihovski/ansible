@@ -101,7 +101,6 @@
       - uv
       - eza
       - fonts-encodings
-      - font-opendyslexic
       - font-opendyslexic-nerd-font
       - neovim
       - meld
