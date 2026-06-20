@@ -186,7 +186,7 @@
   tags: [install, core]
 - name: Installing Java
   args:
-    executable: /bin/bash
+    executable: /bin/zsh
   shell: source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 24.0.2-amzn
   become: false
   tags: [install, core]
