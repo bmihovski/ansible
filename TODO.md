@@ -21,6 +21,8 @@ example
 
 Create ~/.vault_pass.txt put your password
 
+Initiate brew env eval "$(/opt/homebrew/bin/brew shellenv)"
+
 ansible-playbook -t install local.yml -vvv --ask-become-pass
 
 ansible-playbook -t dotfiles local.yml -vvv --ask-become-pass
