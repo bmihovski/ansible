@@ -175,6 +175,7 @@
       - tree-sitter-cli
       - python@3.13
       - copilot-cli
+      - jan
   tags: install, core, brew]
 - name: install Rosetta2 required for non arm software
   become: false
