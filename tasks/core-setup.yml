@@ -68,7 +68,7 @@
       - unzip
       - libtool
       - gettext
-      - docker
+      - orbstack
       - lazydocker
       - lazygit
       - zoxide
@@ -176,6 +176,8 @@
       - python@3.13
       - copilot-cli
       - jan
+      - uncrustify
+      - astyle
   tags: install, core, brew]
 - name: install Rosetta2 required for non arm software
   become: false
